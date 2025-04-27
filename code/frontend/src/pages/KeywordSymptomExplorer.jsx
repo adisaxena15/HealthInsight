@@ -59,22 +59,29 @@ export default function KeywordSymptomExplorer() {
             <p className="text-center text-muted-foreground">Loading symptoms...</p>
           )}
 
-          {!loading && symptomResults.length > 0 && (
-            <div className="space-y-4 mt-8">
-              <h2 className="text-2xl font-semibold text-primary text-center">Symptoms matching "{selectedKeyword}"</h2>
-              {symptomResults.map((item, index) => (
-                <div
-                  key={index}
-                  className="border border-border rounded-lg p-4 shadow-sm bg-card text-card-foreground"
-                >
-                  <p className="text-lg font-medium">{item.Keyword}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Matches: {item.MatchCount}, Total Occurrences: {item.TotalOccurrences}
-                  </p>
-                </div>
-              ))}
+{!loading && symptomResults.length > 0 && (
+  <div className="space-y-8 mt-8">
+    <h2 className="text-2xl font-semibold text-primary text-center mb-6">
+      Symptoms matching "{selectedKeyword}"
+    </h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {symptomResults.map((item, index) => (
+        <div
+          key={index}
+          className="border border-border rounded-xl p-6 shadow-md bg-card text-card-foreground hover:shadow-lg transition-shadow duration-300"
+        >
+          <p className="text-2xl font-extrabold mb-4 text-primary">{item.Keyword}</p>
+          <div className="flex items-center justify-center text-lg text-muted-foreground">
+            <div className="flex flex-col items-center">
+              <span className="font-semibold text-xl">{item.TotalOccurrences}</span>
+              <span>Occurrences</span>
             </div>
-          )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
         </div>
       </div>
     </main>

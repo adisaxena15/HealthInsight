@@ -37,7 +37,6 @@ export default function SymptomGraph() {
       }
       
       const data = await response.json();
-      console.log("Received data from backend:", data);
       
       if (!data.results || !Array.isArray(data.results)) {
         throw new Error('Invalid data format received from backend');
@@ -55,7 +54,6 @@ export default function SymptomGraph() {
         });
         
         setFormattedWords(formattedWords);
-        console.log("Formatted words:", formattedWords);
       }
       
       setShowMessage(true);

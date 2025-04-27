@@ -9,12 +9,45 @@ export default function QuestionAnswer() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [results, setResults] = useState([]);
   const [logs, setLogs] = useState([]);
+  const [focusAreas, setFocusAreas] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const email = localStorage.getItem("email");
 
   const commonSymptoms = [
     "Fever", "Cough", "Headache", "Fatigue",
     "Nausea", "Vomiting", "Shortness of breath", "Dizziness", "Sore throat"
   ];
+
+  useEffect(() => {
+    async function fetchFocusAreas() {
+      try {
+        // Step 1: Check localStorage
+        const cached = localStorage.getItem("focusAreas");
+        if (cached) {
+          console.log("Loaded from localStorage");
+          setFocusAreas(JSON.parse(cached));
+          setLoading(false);
+          return;
+        }
+
+        // Step 2: If no cache, fetch from API
+        const response = await fetch("/api/focusareas");
+        const data = await response.json();
+        setFocusAreas(data.focusAreas || []);
+
+        // Step 3: Save to localStorage
+        localStorage.setItem("focusAreas", JSON.stringify(data.focusAreas || []));
+      } catch (error) {
+        console.error("Failed to fetch focus areas:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchFocusAreas();
+  }, []);
+
 
   useEffect(() => {
     const fetchLogs = async () => {
@@ -174,7 +207,29 @@ export default function QuestionAnswer() {
             </Button>
             <Button onClick={handleSearch}>Search</Button>
           </div>
-        </div>
+        </div> 
+        {!loading && focusAreas.length > 0 && (
+  <div className="overflow-x-auto mt-10">
+    <table className="min-w-full bg-card border border-border rounded-lg">
+      <thead>
+        <tr className="bg-primary text-primary-foreground">
+          <th className="py-3 px-6 text-left">Focus Area</th>
+          <th className="py-3 px-6 text-left">Number of Questions</th>
+          <th className="py-3 px-6 text-left">Example Question</th>
+        </tr>
+      </thead>
+      <tbody>
+        {focusAreas.map((item, index) => (
+          <tr key={index} className="border-t border-border hover:bg-muted/50">
+            <td className="py-3 px-6">{item.FocusArea}</td>
+            <td className="py-3 px-6">{item.NumQuestions}</td>
+            <td className="py-3 px-6 italic text-muted-foreground">{item.ExampleQuestion}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
 
         {results.length === 0 && logs.length > 0 && (
           <div className="max-w-2xl mx-auto mt-10 space-y-6">

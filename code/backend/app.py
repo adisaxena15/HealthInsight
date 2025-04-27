@@ -528,6 +528,30 @@ def upvote_question():
         print(f"Question upvote error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
+
+@app.route('/api/focusareas', methods=['GET'])
+def get_focus_areas():
+    try:
+        cursor = mysql_conn.cursor(dictionary=True)
+        cursor.execute('''
+            SELECT 
+              TRIM(FocusArea) AS FocusArea,
+              COUNT(*) AS NumQuestions,
+              MIN(TRIM(Question)) AS ExampleQuestion
+            FROM Question_Answer_Symptoms
+            WHERE TRIM(FocusArea) IS NOT NULL AND TRIM(FocusArea) != ''
+            GROUP BY TRIM(FocusArea)
+            HAVING COUNT(*) > 1
+            ORDER BY NumQuestions DESC
+            LIMIT 10;
+        ''')
+        results = cursor.fetchall()
+        return jsonify({'focusAreas': results})
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({'error': 'Failed to fetch focus areas'}), 500
+    
+    
 @app.route("/api/questionDownvote", methods=["POST"])
 def downvote_question():
     try:
@@ -566,7 +590,7 @@ def downvote_question():
     except Exception as e:
         print(f"Question downvote error: {str(e)}")
         return jsonify({"error": str(e)}), 500
-    
+
     
 
 if __name__ == "__main__":

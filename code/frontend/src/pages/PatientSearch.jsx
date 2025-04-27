@@ -105,7 +105,6 @@ export default function PatientSearch() {
 
   const handleDownvote = async (recordId) => {
     try {
-      console.log(recordId)
       const response = await fetch(`/api/downvote?id=${recordId}`, {
         method: 'POST',
         headers: {
