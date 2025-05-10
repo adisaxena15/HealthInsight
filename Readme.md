@@ -1,16 +1,48 @@
-# Team027-bigDogs
-This is a template for CS411 project repository. Please make sure that your title follows the convention: [TeamID]-[YourTeamName]. All TeamID should have a three digit coding (i.e. if you are team 20, you should have `team020` as your ID.). You should also make sure that your url for this repository is [sp25-cs411-team000-teamname.git] so TAs can correctly clone your repository and keep them up-to-date.
+# Health Insight
 
-Once you setup your project, please remember to submit your team formation to the team form.
+**Database Health Insight** is a secure, cloud-integrated web application that connects to a structured medical database hosted on Google Cloud Platform (GCP). It provides authenticated access to patient diagnosis records and question-answer pairs for clinical use, combining deep query capabilities with intuitive data visualization to surface meaningful patterns from large datasets.
+![image](https://github.com/user-attachments/assets/9c0caf99-f624-4e72-b65c-e68d5856dada)
 
-## Permission
-You should make sure you allow TAs to access your repository. You can add TA(s) as a collaborator to your repository.
+## 🔍 What It Does
 
-## Preparing for your release
-Eash submission should be in it's own [release](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases). Release are specific freezes to your repository. You should submit your commit hash on canvas or google sheet. When tagging your stage, please use the tag `stage.x` where x is the number to represent the stage.
+The system is designed to assist in understanding large-scale medical datasets by enabling:
 
-## Keeping things up-to-date
-You should make sure you keep your project root files up-to-date. Information for each file/folders are explained.
+- **Secure access** to patient and QA records using **OAuth2.0 authentication**
+- **Fast and flexible search** across diagnosis notes and question-answer data using **Elasticsearch** indexing
+- **Interactive data exploration** through a **word graph visualization** of relationships between diagnoses, symptoms, and medical keywords
+- **Advanced SQL queries** over the GCP-hosted database to extract insights like frequently co-occurring conditions or most asked medical questions
 
-## Code Contribution
-Individual code contribution will be used to evaluate individual contribution to the project.
+The backend handles API routing, search processing, and user sessions, while the frontend focuses on delivering an interactive and insightful user experience for clinical researchers or data analysts.
+
+## ⚙️ How to Run
+
+1. **Clone and install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+2.**Set up environment variables (credentials, GCP configs, and OAuth keys)**
+  ```bash
+DB_URI=...
+GCP_PROJECT_ID=...
+OAUTH_CLIENT_ID=...
+OAUTH_CLIENT_SECRET=...
+  ```
+3.**Start the Backend and Frontend**
+  ```bash
+npm run start
+python app.py
+  ```
+## 🧠 Technologies Used
+
+- **Google Cloud SQL** – Stores diagnosis and QA data
+- **Elasticsearch** – Enables high-speed, full-text search capabilities
+- **OAuth2.0** – Secures user login and session management
+- **Flask / FastAPI** – Backend server and API routing
+- **D3.js / Plotly / NetworkX** – For generating dynamic word graph visualizations
+
+## 🧪 Example Use Cases
+
+- Identify symptom clusters that frequently appear together in patient records
+- Search all past patient cases involving a specific condition or treatment
+- Explore how different terms are semantically connected via graph relationships
+- Enable medical students or researchers to query QA pairs by keyword or topic
